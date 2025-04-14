@@ -6,9 +6,9 @@ Pororo subtitle rip
 
 1. Download this repository (click the green code button > download zip)
 1. Install VideoSubFinder: https://sourceforge.net/projects/videosubfinder/
-2. Install python 3.8: https://www.python.org/downloads/release/python-3810/
-3. Install pycharm (optional if you know how to install python): https://www.jetbrains.com/pycharm/
-4. (Optional) Install tesseract for english subtitle detection: https://github.com/UB-Mannheim/tesseract/wiki
+1. Install python 3.8: https://www.python.org/downloads/release/python-3810/
+1. Install pycharm (optional if you know how to install python): https://www.jetbrains.com/pycharm/
+1. (Optional) Install tesseract for english subtitle detection: https://github.com/UB-Mannheim/tesseract/wiki
 
 # Usage
 
@@ -18,7 +18,7 @@ Pororo subtitle rip
 
 * Open the settings tab
 * Adjust the setting, set the bounds of where the subtitles are expected to be.
-* If your subtitles are always the same colour, you can filter by color. To check this worked, hold down `T`
+* If your subtitles are always the same colour, you can filter by color. See the color of the pixel by hovering your cursor over the video, and it will display in the bottom right. To check the filtered image, hold down `T`.
   * You may need to play around with the gamma to get it to detect better or expand the default dL/ dA / dB
 
 ![vsf1.jpg](assets%2Fimages%2Fvsf1.jpg)
@@ -64,7 +64,8 @@ In the folder there is a `settings.json` file that looks like this
 
 1. Download pycharm: https://www.jetbrains.com/pycharm/ 
 2. In pycharm, choose this folder to open as a new project
-3. It will ask you to install requirements, click this
+3. There should be a popup asking you to install requirements, click accept
 4. Run the file by clicking on this bug looking icon to the right of the arrow in the top bar
+5. After running, it will export the .srt to `output/project_name`
 
 ![run.jpeg](assets%2Fimages%2Frun.jpeg)
