@@ -1,0 +1,6 @@
+{
+    "project_name": "my_project_name",
+    "vsf_img_dir": "C:/Programs/Tools/VideoSubFinder_6.10_x64/ILAImages",
+    "tesseract_exe": "C:/Programs/Tesseract-OCR/tesseract.exe",
+    "use_english": true
+}

@@ -1,0 +1,7 @@
+.idea
+venv/
+*.mp4
+*.ts
+*.m4a
+*.m3u8
+output

@@ -1,67 +1,70 @@
 <h2 align="center">
-Korean OCR using pororo
+Pororo subtitle rip
 </h2>
 
-<div align="center">
-  <img src="https://img.shields.io/badge/python-v3.7.13-blue.svg"/>
-  <img src="https://img.shields.io/badge/torch-v1.13.1-blue.svg"/>
-  <img src="https://img.shields.io/badge/torchvision-v0.14.1-blue.svg"/>
-  <img src="https://img.shields.io/badge/opencv_python-v4.7.0.68-blue.svg"/>
-</div>
+# Installation
 
-This is a Korean OCR Python code using the Pororo library.
+1. Download this repository (click the green code button > download zip)
+1. Install VideoSubFinder: https://sourceforge.net/projects/videosubfinder/
+2. Install python 3.8: https://www.python.org/downloads/release/python-3810/
+3. Install pycharm (optional if you know how to install python): https://www.jetbrains.com/pycharm/
+4. (Optional) Install tesseract for english subtitle detection: https://github.com/UB-Mannheim/tesseract/wiki
 
-<div align="center">
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FboAZK8%2FbtrYeYCWzKj%2Ft3Lhe05Bqm1iQNkOo4x9Lk%2Fimg.png" width="70%">
-</div>
+# Usage
 
-## Requirements
+## 1. Video Sub Finder
 
-- torch
-- torchvision
-- opencv-python
+### 1.1 Adjust the settings
 
-You can install it from PyPI:
+* Open the settings tab
+* Adjust the setting, set the bounds of where the subtitles are expected to be.
+* If your subtitles are always the same colour, you can filter by color. To check this worked, hold down `T`
+  * You may need to play around with the gamma to get it to detect better or expand the default dL/ dA / dB
 
-```sh
-pip install torch
-pip install torchvision
-pip install opencv-python
+![vsf1.jpg](assets%2Fimages%2Fvsf1.jpg)
+
+### 1.2 Run the search
+
+* Now in the Search tab click Run Search
+  * If you have run it earlier, you will want to clear folders first
+
+![vsf-2.jpg](assets%2Fimages%2Fvsf-2.jpg)
+
+### 1.3 Choose and delete the bad images
+
+VideoSubFinder exports 3 types of images:
+* RGB
+* ILA
+* ISA
+
+I dunno what the difference between ILA and ISA is but basically you want to look at each of them and see which one has the best results.
+
+Now open the images in some image viewer and delete all the badly recognized ones.
+
+## 2. Running the script to generate the srt file
+
+### 2.1 Settings.json
+
+In the folder there is a `settings.json` file that looks like this
+
+```json
+{
+    "project_name": "my_project_name",
+    "vsf_img_dir": "C:/Programs/Tools/VideoSubFinder_6.10_x64/ILAImages",
+    "tesseract_exe": "C:/Programs/Tesseract-OCR/tesseract.exe",
+    "use_english": false
+}
 ```
+* project_name: this is what your srt file will be named as
+* vsf_img_dir: the video sub finder image directory, which should match the one you chose earlier in [Step 1.3](#13-choose-and-delete-the-bad-images)
+* tesseract_exe: (OPTIONAL) the path to your tesseract installation (for english)
+* use_english: toggle if you want to detect english subtitles
 
-## PORORO: Platform Of neuRal mOdels for natuRal language prOcessing
+### 2.2. Running in pycharm
 
-[pororo](https://github.com/kakaobrain/pororo) is a library developed by KakaoBrain for performing natural language processing and speech-related tasks. 
+1. Download pycharm: https://www.jetbrains.com/pycharm/ 
+2. In pycharm, choose this folder to open as a new project
+3. It will ask you to install requirements, click this
+4. Run the file by clicking on this bug looking icon to the right of the arrow in the top bar
 
-This repository is configured to only include the OCR functionality from the pororo library. If you wish to use other pororo features such as natural language processing, please install pororo through `pip install pororo`.
-
-## Usage
-
-```python
-from pororo import Pororo
-
-ocr = PororoOcr()
-image_path = input("Enter image path: ")
-text = ocr.run_ocr(image_path, debug=True)
-print('Result :', text)
-```
-
-Output:
-
-```sh
-['메이크업존 MAKEUP ZONE', '드레스 피팅룸 DRESS FITTING ROOM', '포토존 PHOTO ZONE']
-```
-
-------
-
-
-
-<div align="center">
-<img src="https://user-images.githubusercontent.com/69428232/216900012-40572b3e-fc16-4bb0-a119-d61eaf680213.png" width="70%">
-</div>
-
-```sh
-["Life is ot a spectator sport. If you're going to spend your whole life in the grandstand just watching what goes on, in my apinion you're wasting your life.",
- "인생은 구경거리가 아니다. 무슨 일이 일어나는지 보기만 하는 것은 인생을 낭비하고 있는 것이다.",
- 'Jackie Robinson']
-```
+![run.jpeg](assets%2Fimages%2Frun.jpeg)
