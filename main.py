@@ -5,6 +5,8 @@ import warnings
 import cv2
 import pytesseract
 
+import re
+
 from pororo import Pororo
 from pororo.pororo import SUPPORTED_TASKS
 from utils.image_util import plt_imshow, put_text
@@ -112,12 +114,13 @@ def make_rows_korean(image_directory, debug=False):
 
     srt_index = 0
     total_files = len(os.listdir(image_directory))
+    print('OCR for Hangul with Pororo')
     for filename in os.listdir(image_directory):
         f = os.path.join(image_directory, filename)
         if os.path.isfile(f):
             sub_timings = make_timings(filename, ',')  # for srt
             sub_content_arr = ocr.run_ocr(f, debug=False)
-            if len(sub_content_arr) > 1:
+            if len(sub_content_arr) >= 1:
                 sub_content = "\n".join(sub_content_arr)
             else:
                 sub_content = 'NO TEXT FOUND'
@@ -140,8 +143,12 @@ def make_rows_korean(image_directory, debug=False):
 
     return full_output
 
+def remove_hangul(text):
+    return re.sub(r'[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]', '', text)
 
 def make_rows_english(image_directory, debug=False):
+    print('OCR for Tesseract for English')
+
     pytesseract.pytesseract.tesseract_cmd = get_settings()['tesseract_exe']
 
     full_output = []
@@ -153,10 +160,22 @@ def make_rows_english(image_directory, debug=False):
         if os.path.isfile(f):
             sub_index = str(srt_index)
             sub_timings = make_timings(filename, ',')  # for srt
-            sub_content = str(pytesseract.image_to_string(f)).strip()
-            # print('CONTENT:')
-            # print(sub_content_arr)
-            # sub_content = " ".join(sub_content_arr)
+            lang = 'kor+eng'
+            sub_content = str(pytesseract.image_to_string(f, lang=lang)).strip()
+
+            new_content = []
+            for line in sub_content.split('\n'):
+                # line = remove_hangul(line)
+                # if len(line.strip()) == 0:
+                #     continue
+
+                new_content.append(line)
+
+            if len(new_content) == 0:
+                sub_content = 'NO TEXT FOUND'
+            else:
+                sub_content = '\n'.join(new_content)
+
             if len(sub_content) == 0:
                 sub_content = ''
 
