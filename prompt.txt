@@ -1,0 +1,35 @@
+Translate these Korean subtitles to english.
+
+- Context: Behind the scenes of the recent fromis_9 album "Like You Better". fromis_9 is made of 5 members, Lee Chaeyoung, Park Jiwon, Song Hayoung, Baek Jiheon and Lee Nagyung. Non of the ex-members (Jisun, Saerom, Gyuri, Seoyeon) will be mentioned in this video!
+
+- Keep each line brief and easy to read, like how real subtitles appear
+
+- Make sure to use the same format as provided:
+
+```
+LINE NUM
+TRANSLATION
+
+LINE NUM
+TRANSLATION
+
+cont.
+```
+
+- When translating 1. Do not put ending full stops 2. Strip out korean characters used for emotions such as ㅋㅋㅋㅋ or ㅠㅠ from the translation
+
+- Do not delete merge or skip lines
+
+- There are sometimes names at the start of the lines or on the 1st new line. You need to convert the names into the format NAME: LINE.
+Convert the names to short form like so:
+```
+
+HAYOUNG = HY
+NAGYUNG = NG
+CHAEYOUNG = CY
+JIHEON = JH
+JIWON = JW
+```
+For example:
+"CHAEYOUNG 피디님! 제가 먼저 한 것 같은데요?"
+"CY: The translated line"

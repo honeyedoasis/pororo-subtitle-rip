@@ -5,3 +5,4 @@ venv/
 *.m4a
 *.m3u8
 output
+gemini/

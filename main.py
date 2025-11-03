@@ -10,6 +10,7 @@ import re
 from pororo import Pororo
 from pororo.pororo import SUPPORTED_TASKS
 from utils.image_util import plt_imshow, put_text
+from google.cloud import vision_v1
 
 warnings.filterwarnings('ignore')
 
@@ -143,6 +144,86 @@ def make_rows_korean(image_directory, debug=False):
 
     return full_output
 
+def make_rows_vision(image_directory, debug=False):
+    full_output = []
+
+    img_files = [f for f in os.scandir(image_directory) if f.is_file()]
+
+    print(os.listdir(image_directory))
+
+    if debug:
+        img_files = img_files[:20]
+
+    print('Parsing rows vision')
+    # print(img_files)
+
+    img_paths = [f.path for f in img_files]
+    results = vision_bulk_text_detection(img_paths)
+
+    for i in range(len(img_files)):
+        file = img_files[i]
+        filename = file.name
+        sub_content = results[i]
+
+        sub_timings = make_timings(filename, ',')  # for srt
+
+        if not sub_content:
+            sub_content = 'NO TEXT FOUND'
+
+        output = {
+            SUBFILENAME_ID: filename,
+            SUBSTART_ID: sub_timings[0],
+            SUBEND_ID: sub_timings[1],
+            SUBHANGUL_ID: sub_content
+        }
+
+        full_output.append(output)
+
+    return full_output
+
+def vision_bulk_text_detection(image_paths):
+    """
+    Runs TEXT_DETECTION on up to 100 local images in chunks of 16.
+    Returns a list of detected text (or None if nothing found).
+    """
+    client = vision_v1.ImageAnnotatorClient()
+    results = []
+
+    def chunk_list(lst, size):
+        for i in range(0, len(lst), size):
+            yield lst[i:i + size]
+
+    for batch in chunk_list(image_paths, 16):
+        requests = []
+
+        for path in batch:
+            with open(path, 'rb') as image_file:
+                content = image_file.read()
+
+            image = vision_v1.Image(content=content)
+
+            request = vision_v1.AnnotateImageRequest(
+                image=image,
+                features=[vision_v1.Feature(type=vision_v1.Feature.Type.TEXT_DETECTION)]
+            )
+            requests.append(request)
+
+        response = client.batch_annotate_images(requests=requests)
+
+        for res in response.responses:
+            if res.error.message:
+                print(f"Error: {res.error.message}")
+                results.append(None)
+            elif res.text_annotations:
+                # print(res.text_annotations)
+                print(res.text_annotations[0].description)
+                results.append(res.text_annotations[0].description)
+            else:
+                results.append(None)
+
+    return results
+
+
 def remove_hangul(text):
     return re.sub(r'[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]', '', text)
 
@@ -240,15 +321,17 @@ def fix_rows(rows):
     return out_rows
 
 
-def main():
+def main(debug=False):
     settings = get_settings()
     my_project_id = settings['project_name']
     my_image_directory = settings['vsf_img_dir']
 
-    if settings['use_english']:
-        rows = make_rows_english(my_image_directory)
-    else:
-        rows = make_rows_korean(my_image_directory)
+    # TODO Do you need to specify some option for google vision to prefer a language?
+    rows = make_rows_vision(my_image_directory, debug)
+    # if settings['use_english']:
+    #     rows = make_rows_english(my_image_directory)
+    # else:
+    #     rows = make_rows_korean(my_image_directory)
 
     rows = fix_rows(rows)
 
