@@ -7,10 +7,23 @@ Pororo subtitle rip
 1. Download this repository (click the green code button > download zip)
 1. Install VideoSubFinder: https://sourceforge.net/projects/videosubfinder/
 1. Install python 3.8: https://www.python.org/downloads/release/python-3810/
-1. Install pycharm (optional if you know how to install python): https://www.jetbrains.com/pycharm/
-1. (Optional) Install tesseract for english subtitle detection: https://github.com/UB-Mannheim/tesseract/wiki
+1. Install pycharm (cos I dunno how to properly setup `requirements.txt`..): https://www.jetbrains.com/pycharm/
+1. Sign up for google vision and 
 
 # Usage
+
+## 0. Google Vision
+
+**NOTE: In order to use google vision you need to provide your credit or debit card details to google**
+
+This project relies on google vision.
+
+You can sign up for a free trial and after the trial ends you get 1000 free tokens per month. This is equivalent to 1000 lines translated each month.
+
+To sign up and setup google vision follow the instructions here:
+
+1. https://cloud.google.com/vision/docs/ocr follow the `Start Free` instructions
+2. https://cloud.google.com/vision/docs/setup
 
 ## 1. Video Sub Finder
 
